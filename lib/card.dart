@@ -1,5 +1,4 @@
 import 'package:flutter/material.dart';
-
 import 'package:my_shop/summary_screen.dart'; 
 
 class CartScreen extends StatelessWidget {
