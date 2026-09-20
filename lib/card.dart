@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
-import 'package:my_shop/delivery_address_screen.dart';
+
+import 'package:my_shop/summary_screen.dart'; 
 
 class CartScreen extends StatelessWidget {
   final List<Map<String, dynamic>> cart;
@@ -68,7 +69,11 @@ class CartScreen extends StatelessWidget {
                                 width: 60,
                                 height: 60,
                                 fit: BoxFit.cover,
-                               
+                                errorBuilder: (_, __, ___) => const SizedBox(
+                                  width: 60,
+                                  height: 60,
+                                  child: Icon(Icons.image_not_supported),
+                                ),
                               ),
                             ),
                             title: Text(
@@ -141,12 +146,12 @@ class CartScreen extends StatelessWidget {
                       width: double.infinity,
                       child: ElevatedButton(
                         onPressed: () {
+                          // Step 1: age Order Summary
                           Navigator.push(
                             context,
                             MaterialPageRoute(
-                              builder: (_) => AddressScreen(
+                              builder: (_) => SummaryScreen(
                                 cart: cart,
-                                total: total,
                                 onOrderPlaced: onOrderPlaced,
                               ),
                             ),

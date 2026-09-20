@@ -1,14 +1,14 @@
 import 'package:flutter/material.dart';
-import 'package:my_shop/payment.dart';
+import 'package:my_shop/delivery_address_screen.dart';
 
 class SummaryScreen extends StatefulWidget {
   final List<Map<String, dynamic>> cart;
-  final VoidCallback onOrderPlaced; // NEW
+  final VoidCallback onOrderPlaced;
 
   const SummaryScreen({
     super.key,
     required this.cart,
-    required this.onOrderPlaced, // NEW
+    required this.onOrderPlaced,
   });
 
   @override
@@ -16,8 +16,7 @@ class SummaryScreen extends StatefulWidget {
 }
 
 class _SummaryScreenState extends State<SummaryScreen> {
-  double discount = 0;
-  double deliveryCharge = 60;
+  static const double deliveryCharge = 60;
 
   bool couponApplied = false;
 
@@ -32,10 +31,13 @@ class _SummaryScreenState extends State<SummaryScreen> {
   double getSubtotal() {
     double total = 0;
     for (var product in widget.cart) {
-      total += product['price'] * product['quantity'];
+      total += (product['price'] as num) * (product['quantity'] as num);
     }
     return total;
   }
+
+  // Coupon apply thakle 10% discount
+  double get discount => couponApplied ? getSubtotal() * 0.10 : 0;
 
   double getGrandTotal() {
     return getSubtotal() - discount + deliveryCharge;
@@ -52,13 +54,7 @@ class _SummaryScreenState extends State<SummaryScreen> {
     }
 
     setState(() {
-      if (code == 'SAVE10') {
-        discount = getSubtotal() * 0.10;
-        couponApplied = true;
-      } else {
-        discount = 0;
-        couponApplied = false;
-      }
+      couponApplied = (code == 'SAVE10');
     });
 
     ScaffoldMessenger.of(context).showSnackBar(
@@ -76,8 +72,21 @@ class _SummaryScreenState extends State<SummaryScreen> {
     setState(() {
       _couponController.clear();
       couponApplied = false;
-      discount = 0;
     });
+  }
+
+  void _continueToAddress() {
+    // Step 2: Delivery Address (grand total shoho)
+    Navigator.push(
+      context,
+      MaterialPageRoute(
+        builder: (_) => AddressScreen(
+          cart: widget.cart,
+          total: getGrandTotal(),
+          onOrderPlaced: widget.onOrderPlaced,
+        ),
+      ),
+    );
   }
 
   @override
@@ -122,6 +131,7 @@ class _SummaryScreenState extends State<SummaryScreen> {
                   Expanded(
                     child: TextField(
                       controller: _couponController,
+                      textCapitalization: TextCapitalization.characters,
                       decoration: InputDecoration(
                         labelText: 'Coupon Code',
                         hintText: 'Enter coupon code',
@@ -159,7 +169,7 @@ class _SummaryScreenState extends State<SummaryScreen> {
                 ),
               ),
 
-            // Discount / Total Summary
+            // Discount / Delivery / Total Summary
             Container(
               padding: const EdgeInsets.all(15),
               margin: const EdgeInsets.all(10),
@@ -188,7 +198,7 @@ class _SummaryScreenState extends State<SummaryScreen> {
                   Row(
                     mainAxisAlignment: MainAxisAlignment.spaceBetween,
                     children: [
-                      const Text('Delivery'),
+                      const Text('Delivery Charge'),
                       Text('৳${deliveryCharge.toStringAsFixed(2)}'),
                     ],
                   ),
@@ -221,24 +231,11 @@ class _SummaryScreenState extends State<SummaryScreen> {
               child: SizedBox(
                 width: double.infinity,
                 child: ElevatedButton(
-                  onPressed: widget.cart.isEmpty
-                      ? null
-                      : () {
-                          Navigator.push(
-                            context,
-                            MaterialPageRoute(
-                              builder: (_) => PaymentScreen(
-                                cart: widget.cart,
-                                total: getGrandTotal(),
-                                onOrderPlaced: widget.onOrderPlaced, address: {}, // NEW
-                              ),
-                            ),
-                          );
-                        },
+                  onPressed: widget.cart.isEmpty ? null : _continueToAddress,
                   child: const Padding(
                     padding: EdgeInsets.all(15),
                     child: Text(
-                      'Continue to Payment',
+                      'Continue to Delivery Details',
                       style: TextStyle(fontSize: 18),
                     ),
                   ),
