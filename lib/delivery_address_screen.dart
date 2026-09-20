@@ -148,7 +148,7 @@ class _AddressScreenState extends State<AddressScreen> {
                         ),
                         validator: (value) {
                           if (value == null || value.trim().isEmpty) {
-                            return 'City / District ';
+                            return 'City / District  ';
                           }
                           return null;
                         },
