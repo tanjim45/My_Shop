@@ -7,11 +7,15 @@ class AddressScreen extends StatefulWidget {
   final double total;
   final VoidCallback onOrderPlaced;
 
+  //for previous adress
+  final Map<String, dynamic>? savedAddress;
+
   const AddressScreen({
     super.key,
     required this.cart,
     required this.total,
     required this.onOrderPlaced,
+    this.savedAddress,
   });
 
   @override
@@ -31,6 +35,26 @@ class _AddressScreenState extends State<AddressScreen> {
   final noteController = TextEditingController();
 
   @override
+  void initState() {
+    super.initState();
+
+    final saved = widget.savedAddress;
+    if (saved != null) {
+      // Ager address form
+      nameController.text = (saved['name'] ?? '').toString();
+      phoneController.text = (saved['phone'] ?? '').toString();
+      addressController.text = (saved['address'] ?? '').toString();
+      cityController.text = (saved['city'] ?? '').toString();
+      noteController.text = (saved['note'] ?? '').toString();
+
+      
+      WidgetsBinding.instance.addPostFrameCallback((_) {
+        if (mounted) _continue();
+      });
+    }
+  }
+
+  @override
   void dispose() {
     nameController.dispose();
     phoneController.dispose();
@@ -41,6 +65,8 @@ class _AddressScreenState extends State<AddressScreen> {
   }
 
   void _continue() {
+    // Ager address e kono field thik na thakle 
+  
     if (!_formKey.currentState!.validate()) return;
 
     final address = {
@@ -170,7 +196,7 @@ class _AddressScreenState extends State<AddressScreen> {
               ),
             ),
 
-            // Total + Continue
+            // Total  Continue
             Container(
               padding: const EdgeInsets.fromLTRB(20, 10, 20, 15),
               child: Column(
