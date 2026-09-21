@@ -23,7 +23,7 @@ class _AuthGateState extends State<AuthGate> {
 
   int currentIndex = 0;
 
-  // Login/Register er por splash 
+  // Login/Register  splash 
   bool showSplash = false;
   bool wasLoggedOut = false;
 
@@ -33,7 +33,7 @@ class _AuthGateState extends State<AuthGate> {
     super.dispose();
   }
 
-  // Order hole cart clean + Orders tab (Order History)
+  // Order hole cart clean 
   void onOrderPlaced() {
     cartController.clear();
     setState(() {

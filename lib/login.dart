@@ -48,6 +48,7 @@ class _LoginScreenState extends State<LoginScreen> {
 
       if (!mounted) return;
 
+
       // Login page bondho kore Home page e jao
       Navigator.of(context).popUntil((route) => route.isFirst);
     } on FirebaseAuthException catch (e) {

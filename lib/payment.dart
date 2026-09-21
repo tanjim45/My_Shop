@@ -27,7 +27,7 @@ class _PaymentScreenState extends State<PaymentScreen> {
     setState(() => isLoading = true);
 
     try {
-      // 1. Order + address Firestore e save
+      //  Order  address Firestore e save
       await OrderService.saveOrder(
         cart: widget.cart,
         total: widget.total,
@@ -35,7 +35,7 @@ class _PaymentScreenState extends State<PaymentScreen> {
         address: widget.address,
       );
 
-      // 2. Cart clear + Orders tab e jao (AuthGate er kaj)
+      //  Cart clear  Orders tab e jao 
       widget.onOrderPlaced();
 
       if (!mounted) return;
@@ -46,7 +46,7 @@ class _PaymentScreenState extends State<PaymentScreen> {
         SnackBar(content: Text('Order placed using $selectedPayment')),
       );
 
-      // 3. Address + Payment page bondho kore Order History te fire jao
+      // Address Payment page bondho kore Order History te fire jao
       Navigator.of(context).popUntil((route) => route.isFirst);
     } catch (e) {
       if (!mounted) return;

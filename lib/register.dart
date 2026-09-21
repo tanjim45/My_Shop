@@ -58,6 +58,7 @@ class _RegisterScreenState extends State<RegisterScreen> {
     });
 
     try {
+     
       // Register hole user auto login hoye Home page e chole jabe
       await authService.register(email, password, name: name);
     } on FirebaseAuthException catch (e) {

@@ -76,7 +76,7 @@ class _SummaryScreenState extends State<SummaryScreen> {
   }
 
   void _continueToAddress() {
-    // Step 2: Delivery Address (grand total shoho)
+   
     Navigator.push(
       context,
       MaterialPageRoute(

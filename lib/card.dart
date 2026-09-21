@@ -145,7 +145,7 @@ class CartScreen extends StatelessWidget {
                       width: double.infinity,
                       child: ElevatedButton(
                         onPressed: () {
-                          // Step 1: age Order Summary
+                          
                           Navigator.push(
                             context,
                             MaterialPageRoute(
